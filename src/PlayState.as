@@ -18,11 +18,13 @@ package
 		
 		
 		[Embed(source = "../content/level1/lighting.png", mimeType = "image/png")] public static var lighting_image:Class;
+		[Embed(source = "../content/ui/vignette.png", mimeType = "image/png")] public static var VIGNETTE:Class;
 		
 		
 		public var dynamicLayer:FlxLayer = new FlxLayer();
 		public var particleLayer:FlxLayer = new FlxLayer();
 		public var lighting:FlxSprite;
+		public var vignette:FlxSprite;
 		public var collisionMap:FlxTilemap;
 		public var pragma : PragmaSprite;
 		public var cats:Array = new Array();
@@ -53,6 +55,10 @@ package
 			lighting = new FlxSprite(0, 0, lighting_image);
 			lighting.blend = "multiply";
 			
+			vignette = new FlxSprite(0, 0, VIGNETTE);
+			vignette.blend = "multiply";
+			vignette.alpha = 0.9
+			
 			pragma = new PragmaSprite(270, 210);
 			var hose : Hose = new Hose(pragma, particleLayer);
 			
@@ -75,7 +81,7 @@ package
 			addCats(270, 97, 300, 200, 12);
 			
 			_kid = new Kid(290, 200, new RandomPathing());
-			add(_kid);
+			dynamicLayer.add(_kid);
 			
 			FlxG.showCursor(Bregma.Cursor);
 		}
@@ -122,8 +128,8 @@ package
 			
 			screen.draw(lighting, FlxG.scroll.x, FlxG.scroll.y);
 			rain.postProcess();
+			screen.draw(vignette);
 		}
 		
 	}
 }
-

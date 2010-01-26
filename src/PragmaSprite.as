@@ -13,7 +13,17 @@
 		[Embed(source="../content/sprites/pragma_smal.png")]
 		protected var PragmaImage: Class;
 		
+		
+		[Embed(source="../content/sounds/foot_left.mp3")]
+		protected var FootLeft: Class;
+		
+		[Embed(source="../content/sounds/foot_right.mp3")]
+		protected var FootRight: Class;
+		
 		public var knockBack:Point = new Point();
+		
+		public var nextStep:int = 0;
+		public var stepDelay:Number = 0;
 		
 		public function PragmaSprite(x : Number, y : Number) 
 		{
@@ -43,6 +53,7 @@
 			if (FlxG.keys.pressed('W')) {
 				velocity.y -= SPEED;
 				action = "walk";
+				
 			} 
 			if (FlxG.keys.pressed('S')) {
 				velocity.y += SPEED;
@@ -73,6 +84,25 @@
 			if (FlxG.keys.justPressed('Z')) {
 				FlxG.play(Sounds.BREGMA_SONG);
 
+			}
+			
+			if (action == "walk")
+			{
+				stepDelay -= FlxG.elapsed;
+				if (stepDelay <= 0)
+				{
+					if (nextStep == 0)
+					{
+						FlxG.play(FootLeft, 0.5);
+						nextStep = 1;
+					}
+					else
+					{
+						FlxG.play(FootRight, 0.5);
+						nextStep = 0;
+					}
+					stepDelay = 2.0 / ANIMATION_SPEED ;
+				}
 			}
 			
 			play(action + "-" + direction);

@@ -11,7 +11,7 @@
 		public function CaptionChain(captions : Array) 
 		{
 			_captions = captions;
-			
+			FlxG.play(Music.Rumble);
 			for (var i:int = 0; i < _captions.length; i++) 
 			{
 				FlxG.state.add(_captions[i]);
@@ -46,6 +46,7 @@
 				caption.active = true;
 			} else if (caption.state == 'done') {
 				_currentCaption++;
+				FlxG.play(Music.Rumble);
 			}
 		}
 	}
