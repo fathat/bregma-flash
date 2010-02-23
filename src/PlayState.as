@@ -2,6 +2,8 @@ package
 {
 	import flash.display.Sprite;
 	import flash.net.FileReferenceList;
+	import Box2D.Dynamics.*;
+	import Box2D.Common.Math.*;
 	import org.flixel.*;
 
 	public class PlayState extends FlxState
@@ -26,7 +28,10 @@ package
 		public var lighting:FlxSprite;
 		public var vignette:FlxSprite;
 		public var collisionMap:FlxTilemap;
+		
 		public var pragma : PragmaSprite;
+		public var bregma : Cat;
+		
 		public var cats:Array = new Array();
 		public var rain:Rain;
 		
@@ -36,6 +41,10 @@ package
 		
 		public function PlayState()
 		{
+			super();
+			
+			dynamicLayer.world = world;
+			
 			screen.alpha = 0;
 			var myMap : FlxTilemap = new FlxTilemap();
 			myMap.loadMap(new data_map, data_tiles, 16, 16);
@@ -60,7 +69,8 @@ package
 			vignette.alpha = 0.9
 			
 			pragma = new PragmaSprite(270, 210);
-			var hose : Hose = new Hose(pragma, particleLayer);
+			bregma = new Cat(230, 210, new RandomPathing());
+			var hose : Hose = new Hose(pragma, bregma, particleLayer);
 			
 			rain = new Rain(screen);
 			
@@ -73,6 +83,7 @@ package
 			add(particleLayer);
 			dynamicLayer.add(pragma);
 			dynamicLayer.add(hose);
+			dynamicLayer.add(bregma);
 			
 			
 			
@@ -80,8 +91,8 @@ package
 			
 			addCats(270, 97, 300, 200, 12);
 			
-			_kid = new Kid(290, 200, new RandomPathing());
-			dynamicLayer.add(_kid);
+			//_kid = new Kid(290, 200, new RandomPathing());
+			//dynamicLayer.add(_kid);
 			
 			FlxG.showCursor(Bregma.Cursor);
 		}
@@ -98,6 +109,14 @@ package
 			}
 		}
 		
+		override public function initPhysics():void 
+		{
+			super.initPhysics();
+			
+			world = new b2World(new b2Vec2(0, 0), false);
+			trace("Initializing world physics... ", world);
+		}
+		
 		override public function update():void 
 		{
 			super.update();
@@ -106,20 +125,12 @@ package
 				fadeIn = 1;
 			screen.alpha = fadeIn;
 			
-			for each (var c:Cat in cats)
-			{
-				c.collideArray(particleLayer.children());
-			}
-			collisionMap.collideArray(dynamicLayer.children())
-			collisionMap.collideArray(particleLayer.children())
 			this.rain.update();
 			
 			if(FlxG.keys.justPressed("Q"))
 				add(new FlxText(0, 0, 200, "BREGMA"));
 
 			dynamicLayer.children().sortOn("foot_y");
-			
-			_kid.update();
 		}
 		
 		override public function postProcess():void 

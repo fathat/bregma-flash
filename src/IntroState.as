@@ -9,9 +9,9 @@
 		public function IntroState() 
 		{
 			_captionChain = new CaptionChain([
-				new Caption("bregma...", FlxG.width/2-20, FlxG.height/2-10, 1.0, 2, 1.0),
-				new Caption("..where are you bregma..", FlxG.width / 2 - 70,  FlxG.height / 2 - 10, 1.0, 2, 1.0),
-				new Caption("...", FlxG.width/2-10,  FlxG.height/2 - 10, 1.0, 2, 1.0)
+				new Caption("bregma...", FlxG.width/2-20, FlxG.height/2-10, 0.75,2 , 0.75),
+				new Caption("..where are you bregma..", FlxG.width / 2 - 70,  FlxG.height / 2 - 10, 0.75,2, 0.75)
+				//new Caption("...", FlxG.width/2-10,  FlxG.height/2 - 10, 0.75, 2, 0.75)
 			]);
 			
 			add(_captionChain);

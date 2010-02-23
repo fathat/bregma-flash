@@ -1,5 +1,6 @@
 ﻿package
 {
+	import Box2D.Common.Math.b2Vec2;
 	import flash.geom.Point;
 	import org.flixel.*;
 	
@@ -22,7 +23,7 @@
 			{
 				decisionCountdown = 3*Math.random();
 				walkCountdown = 1.5*Math.random();
-				character.velocity = new Point(0, 0);
+				character.velocity = new b2Vec2(0, 0);
 				var i : int = int(Math.random() * 4);
 				if (i == 0)
 				{
@@ -51,7 +52,7 @@
 			}
 			if (walkCountdown < 0)
 			{
-				character.velocity = new Point(0, 0);
+				character.velocity = new b2Vec2(0, 0);
 				character.specificFrame(4);
 			}
 		}

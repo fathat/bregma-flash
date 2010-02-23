@@ -1,5 +1,6 @@
 ﻿package  
 {
+	import Box2D.Common.Math.b2Vec2;
 	import flash.geom.Point;
 	import org.flixel.*;
 	
@@ -20,7 +21,7 @@
 		[Embed(source="../content/sounds/foot_right.mp3")]
 		protected var FootRight: Class;
 		
-		public var knockBack:Point = new Point();
+		public var knockBack:b2Vec2 = new b2Vec2();
 		
 		public var nextStep:int = 0;
 		public var stepDelay:Number = 0;
@@ -48,7 +49,8 @@
 			var action : String = "idle";
 			var direction : String = look_direction();
 			
-			velocity = new Point(0, 0).add(knockBack);
+			velocity = new b2Vec2(0, 0)
+			velocity.Add(knockBack);
 			
 			if (FlxG.keys.pressed('W')) {
 				velocity.y -= SPEED;
@@ -69,7 +71,6 @@
 			}
 			
 			if (FlxG.keys.justPressed('X')) {
-				trace(x, y)
 				var choice:int = Math.random() * 4;
 				if (choice == 0)
 					FlxG.play(Sounds.BREGMA_CALL_1);
@@ -106,7 +107,7 @@
 			}
 			
 			play(action + "-" + direction);
-			knockBack = new Point(0, 0);
+			knockBack = new b2Vec2(0, 0);
 			super.update();
 		}
 		

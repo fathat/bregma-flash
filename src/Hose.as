@@ -6,6 +6,7 @@
 	import org.flixel.*;
 	
 	import Math;
+	import Box2D.Common.Math.*;
 	
 	public class Hose extends Character
 	{	
@@ -18,6 +19,7 @@
 		private var _start_y : Number = 275;
 		
 		private var _pragma : PragmaSprite;
+		private var _cat : Cat;
 		private var _points : Array;
 		
 		private var _particles : FlxEmitter = new FlxEmitter(0, 0, 0.1);
@@ -27,10 +29,12 @@
 		
 		public const OFFSET_Y : Number = -2;
 		
-		public function Hose(pragma : PragmaSprite, layer:FlxLayer) 
+		public function Hose(pragma : PragmaSprite, cat:Cat, layer:FlxLayer) 
 		{
 			_pragma = pragma;
-			
+			_cat = cat;
+			_start_x = cat.x;
+			_start_y = cat.y;
 			_points = new Array();
 			for (var i:int = _start_x; i <pragma.x; i += _node_distance) 
 			{
@@ -45,7 +49,6 @@
 				layer.add(p);
 				sprites.push(p);
 			}
-			trace(sprites);
 			_particles.loadSprites(sprites);
 		}
 		
@@ -61,6 +64,7 @@
 			
 			var mnx : Number = (mdx / d) * _node_distance;
 			var mny : Number = (mdy / d) * _node_distance;
+			_cat.center = new Point(_points[0].x, _points[0].y);
 			
 			_points[_points.length - 1] = new Point(_pragma.center.x + mnx, _pragma.center.y-OFFSET_Y + mny);
 			_points[_points.length - 2] = new Point(_pragma.center.x, _pragma.center.y-OFFSET_Y);
@@ -96,7 +100,7 @@
 			if (FlxG.mouse.pressed())
 			{
 				spray();
-				_pragma.knockBack = new Point( -mnx * 10, -mny * 10);
+				_pragma.knockBack = new b2Vec2( -mnx * 10, -mny * 10);
 				if(this._sound == null)
 					this._sound = FlxG.play(HOSE_SOUND, 0.5, true);
 			}
